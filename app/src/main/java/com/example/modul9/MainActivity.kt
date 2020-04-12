@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,7 +24,13 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         wordViewModel = ViewModelProvider(this).get(WordViewModel::class.java)
         wordViewModel.allWords.observe(this, Observer { words ->
-            words?.let { adapter.setWords(it) }
+            words?.let {
+                adapter.setWords(it) 
+            adapter.setOnClickListener {
+                val current = words[it]
+                Toast.makeText(this, "Namanya "+ current.word , Toast.LENGTH_SHORT).show()
+                }
+            }
 
         })
         val fab = findViewById<FloatingActionButton>(R.id.fab)
@@ -31,7 +38,16 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity,NewWordActivity::class.java)
             startActivityForResult(intent,newWordActivityRequestCode)
 
-        }}
+        }
+        val del = findViewById<Button>(R.id.btnhapus)
+        del.setOnClickListener{
+            wordViewModel.deleteALL()
+            Toast.makeText(applicationContext,
+                 R.string.Hapus, Toast.LENGTH_LONG).show()
+
+        }
+
+    }
 
     override fun onActivityResult(requestCode: Int,     resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -46,9 +62,5 @@ class MainActivity : AppCompatActivity() {
            // Toast.makeText(applicationContext,
            // R.string.empty_not_saved, Toast.LENGTH_LONG).show()
         }
-
-
     }
-
-
     }

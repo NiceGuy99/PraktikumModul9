@@ -12,19 +12,14 @@ import android.widget.Toast
 class NewWordActivity : AppCompatActivity() {
     private lateinit var editWordView: EditText
     val replyIntent = Intent()
-    var cek = "1"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_word)
         editWordView = findViewById(R.id.edit_word)
-
-
         val button = findViewById<Button>(R.id.button_save)
         button.setOnClickListener{
-            cek = "2"
             if (TextUtils.isEmpty(editWordView.text)){
              setResult(Activity.RESULT_CANCELED,replyIntent)
-
             }
 
             else {
@@ -36,13 +31,7 @@ class NewWordActivity : AppCompatActivity() {
             }
             finish()
         }
-
-
-
     }
-
-
-
     companion object{
         const val EXTRA_REPLY = "com.example.android.wordlistsql.REPLY"
     }

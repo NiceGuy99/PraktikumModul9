@@ -11,7 +11,7 @@ class WordListAdapter internal constructor(context: Context) : RecyclerView.Adap
 
         private val inflater: LayoutInflater= LayoutInflater.from(context)
     private var words = emptyList<Word>()
-
+    var clickListener : OnClickListener? = null
     inner class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val wordItemView: TextView = itemView.findViewById(R.id.textView)
     }
@@ -23,6 +23,7 @@ class WordListAdapter internal constructor(context: Context) : RecyclerView.Adap
     override fun onBindViewHolder(holder: WordViewHolder, position: Int){
         val current = words[position]
         holder.wordItemView.text = current.word
+        holder.wordItemView.setOnClickListener({itemView -> clickListener?.onClick(position)})
     }
     internal fun setWords(words: List<Word>) {
         this.words = words
@@ -30,4 +31,16 @@ class WordListAdapter internal constructor(context: Context) : RecyclerView.Adap
     }
     override fun getItemCount() = words.size
 
+    fun setOnClickListener(listener: (Int) -> Unit){
+        this.clickListener = object: OnClickListener {
+            override fun onClick(position: Int) {
+                listener(position)
+            }
+        }
+    }
+
+
+    interface OnClickListener{
+        fun onClick(position: Int)
+    }
 }
